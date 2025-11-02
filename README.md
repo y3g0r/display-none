@@ -7,12 +7,15 @@ A powerful browser extension that allows you to hide HTML elements on any webpag
 - **Click to Hide**: Simply click on any element to hide it from the page
 - **Visual Feedback**: Hover over elements to see what will be hidden (red outline)
 - **Undo/Redo**: Full undo/redo support for all hiding actions
-- **Accept/Cancel**: Accept changes to keep them, or cancel to restore everything
+- **Persistent Rules**: Hidden elements persist across page navigation on the same domain
+- **Accept/Cancel**: Accept changes to save them permanently, or cancel to restore session changes
+- **Reset All**: Completely reset all hiding rules for the current domain
 - **Keyboard Shortcuts**:
   - `Ctrl+Z` (or `Cmd+Z` on Mac) - Undo
   - `Ctrl+Y` (or `Cmd+Y` on Mac) - Redo
 - **Mobile Optimized**: Large touch-friendly buttons and responsive design
 - **Floating Action Buttons (FABs)**: Easy-to-access controls that stay visible
+- **Cross-Domain Storage**: Each domain has its own set of hiding rules
 
 ## Installation
 
@@ -51,11 +54,12 @@ For permanent installation in Firefox, you need to:
 
 1. Navigate to any webpage
 2. Click the extension icon in your browser toolbar
-3. The element hider mode will activate, showing 4 floating action buttons:
-   - **Undo** (curved arrow left) - Undo the last action
-   - **Redo** (curved arrow right) - Redo an undone action
-   - **Accept** (checkmark) - Accept all changes and exit
-   - **Cancel** (X) - Cancel all changes and restore elements
+3. The element hider mode will activate, showing 5 floating action buttons:
+   - **Undo** (blue, curved arrow left) - Undo the last action
+   - **Redo** (blue, curved arrow right) - Redo an undone action
+   - **Reset All** (orange, circular arrow) - Reset all hiding rules for this domain
+   - **Accept** (green, checkmark) - Save changes and persist across pages
+   - **Cancel** (red, X) - Cancel session changes only
 
 ### Hiding Elements
 
@@ -66,17 +70,25 @@ For permanent installation in Firefox, you need to:
 3. Continue hiding elements as needed
 4. Use Undo/Redo to adjust your changes
 
-### Accepting or Canceling Changes
+### Managing Changes
 
-- **Accept**: Click the green checkmark button
-  - All hidden elements will remain hidden
+- **Accept** (Green Checkmark): Click to save your hiding rules permanently
+  - Rules are saved to browser storage
+  - Hidden elements persist across page reloads and navigation on the same domain
   - The extension will deactivate
-  - Changes persist until page reload
+  - Example: Hide a cookie banner on example.com, it stays hidden on all example.com pages
 
-- **Cancel**: Click the red X button
-  - All hidden elements will be restored
+- **Cancel** (Red X): Click to undo current session changes only
+  - Restores elements hidden during this session
+  - Does NOT affect previously saved/persisted rules
   - The extension will deactivate
-  - Everything returns to normal
+  - Use this to discard changes you just made
+
+- **Reset All** (Orange Circular Arrow): Click to completely reset the domain
+  - Removes ALL saved hiding rules for this domain
+  - Restores all hidden elements (both session and persisted)
+  - Clears browser storage for this domain
+  - Use this for a fresh start on the current domain
 
 ### Mobile Usage
 
@@ -106,7 +118,10 @@ display-none/
 2. **Event Listeners**: Captures clicks and hover events when activated
 3. **State Management**: Maintains history stack for undo/redo
 4. **CSS Manipulation**: Sets `display: none` on hidden elements
-5. **FAB UI**: Creates floating action buttons with event handlers
+5. **Selector Generation**: Creates unique CSS selectors for each hidden element
+6. **Persistence Layer**: Stores selectors in browser storage (keyed by domain)
+7. **Auto-Apply**: On page load, retrieves and applies stored selectors for current domain
+8. **FAB UI**: Creates floating action buttons with event handlers
 
 ### Browser Compatibility
 
@@ -123,7 +138,17 @@ The extension uses Manifest V2 with a browser API polyfill to support both Chrom
 ### Permissions
 
 - `activeTab`: Required to interact with the current webpage
-- `storage`: Reserved for future features (saving hidden elements)
+- `storage`: Used to persist hiding rules across page loads and sessions
+- `<all_urls>`: Allows the extension to work on all websites
+
+### Storage and Persistence
+
+The extension uses `browser.storage.local` to persist hiding rules:
+- **Domain-specific**: Each domain (e.g., `example.com`) has its own storage key
+- **CSS Selectors**: Elements are identified by generated CSS selectors (not DOM references)
+- **Automatic Loading**: Stored rules are applied automatically when you visit pages
+- **Privacy**: All data is stored locally in your browser, never sent to external servers
+- **Manual Reset**: Use the "Reset All" button to clear rules for any domain
 
 ## Customization
 
@@ -192,13 +217,25 @@ To add custom icons for the extension:
 - Some elements may have `!important` styles that override hiding
 - Try disabling other extensions that might conflict
 
+### Elements still hidden after page reload
+- This is expected behavior! The extension now persists hiding rules
+- Use the "Reset All" button to clear all saved rules for the domain
+- Or use "Cancel" before accepting to discard session changes
+
+### Reset All button not working
+- Check browser console for errors
+- Try reloading the page and clicking Reset All again
+- As a last resort, clear browser storage manually via browser dev tools
+
 ## Future Enhancements
 
-- [ ] Persist hidden elements across page reloads
+- [x] ~~Persist hidden elements across page reloads~~ ✅ Implemented!
+- [x] ~~Domain-specific storage~~ ✅ Implemented!
 - [ ] Export/import hiding rules for specific websites
 - [ ] Element selector mode (hide all instances of similar elements)
 - [ ] Custom CSS rules beyond `display: none`
-- [ ] Sync settings across devices
+- [ ] Sync settings across devices via browser sync storage
+- [ ] Visual indicator showing when persistent rules are active on a page
 
 ## Contributing
 

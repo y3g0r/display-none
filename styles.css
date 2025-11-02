@@ -63,6 +63,14 @@
   background: #da190b;
 }
 
+.fab-button.fab-reset {
+  background: #FF9800;
+}
+
+.fab-button.fab-reset:hover {
+  background: #F57C00;
+}
+
 .fab-button svg {
   pointer-events: none;
 }
