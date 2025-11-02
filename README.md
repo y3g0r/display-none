@@ -103,7 +103,7 @@ On mobile devices:
 ```
 display-none/
 ├── manifest.json       # Extension configuration (Manifest V3)
-├── background.js       # Background script (event page)
+├── background.js       # Background script (service worker in Chrome, event page in Firefox)
 ├── content.js          # Main element hiding logic
 ├── styles.css          # FAB and UI styling
 ├── icon.svg            # Extension icon (template)
@@ -133,7 +133,10 @@ display-none/
 
 The extension uses Manifest V3, the latest browser extension standard, with a browser API polyfill to support both Chrome's `chrome.*` API and Firefox's `browser.*` API, ensuring seamless compatibility across all major browsers.
 
-**Note**: The extension uses `background.scripts` instead of `service_worker` for Firefox compatibility, as Firefox's MV3 implementation doesn't fully support service workers yet. This approach works in both Chrome and Firefox MV3.
+**Background Script Strategy**: The manifest includes both `service_worker` and `scripts` in the background configuration:
+- **Chrome/Edge/Brave**: Uses `service_worker` for optimal performance
+- **Firefox**: Uses `scripts` (event page) as service workers aren't fully implemented yet
+- Each browser automatically uses its preferred method while ignoring the other
 
 ### Permissions
 
