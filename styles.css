@@ -1,0 +1,158 @@
+/* Element Hider Extension Styles */
+
+#element-hider-fab-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 2147483647; /* Maximum z-index */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.fab-button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #2196F3;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fab-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.fab-button:active {
+  transform: scale(0.95);
+}
+
+.fab-button.disabled {
+  background: #9E9E9E;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.fab-button.disabled:hover {
+  transform: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.fab-button.fab-accept {
+  background: #4CAF50;
+}
+
+.fab-button.fab-accept:hover {
+  background: #45a049;
+}
+
+.fab-button.fab-cancel {
+  background: #f44336;
+}
+
+.fab-button.fab-cancel:hover {
+  background: #da190b;
+}
+
+.fab-button svg {
+  pointer-events: none;
+}
+
+/* Notification styles */
+.element-hider-notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  z-index: 2147483647;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  max-width: 80%;
+  text-align: center;
+}
+
+.element-hider-notification.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  #element-hider-fab-container {
+    bottom: 16px;
+    right: 16px;
+    gap: 10px;
+  }
+
+  .fab-button {
+    width: 60px;
+    height: 60px;
+  }
+
+  .element-hider-notification {
+    bottom: 16px;
+    max-width: 90%;
+    font-size: 13px;
+    padding: 14px 20px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  #element-hider-fab-container {
+    bottom: 12px;
+    right: 12px;
+    gap: 8px;
+  }
+
+  .fab-button {
+    width: 52px;
+    height: 52px;
+  }
+
+  .fab-button svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Landscape mobile optimization */
+@media (max-height: 500px) and (orientation: landscape) {
+  #element-hider-fab-container {
+    flex-direction: row;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .fab-button {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Touch device optimization */
+@media (hover: none) and (pointer: coarse) {
+  .fab-button {
+    width: 64px;
+    height: 64px;
+  }
+
+  .fab-button:active {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(0.9);
+  }
+}

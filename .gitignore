@@ -1,0 +1,19 @@
+# Web extension artifacts
+web-ext-artifacts/
+
+# Node modules (if using web-ext)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.log
+*.tmp
