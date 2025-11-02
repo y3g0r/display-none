@@ -14,7 +14,7 @@
     "default_title": "Toggle Element Hider"
   },
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"]
   },
   "content_scripts": [
     {

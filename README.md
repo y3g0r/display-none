@@ -103,7 +103,7 @@ On mobile devices:
 ```
 display-none/
 ├── manifest.json       # Extension configuration (Manifest V3)
-├── background.js       # Background service worker
+├── background.js       # Background script (event page)
 ├── content.js          # Main element hiding logic
 ├── styles.css          # FAB and UI styling
 ├── icon.svg            # Extension icon (template)
@@ -133,7 +133,7 @@ display-none/
 
 The extension uses Manifest V3, the latest browser extension standard, with a browser API polyfill to support both Chrome's `chrome.*` API and Firefox's `browser.*` API, ensuring seamless compatibility across all major browsers.
 
-**Note**: Manifest V3 is future-proof and supported by all modern browsers. Firefox 109+ is required for full MV3 service worker support.
+**Note**: The extension uses `background.scripts` instead of `service_worker` for Firefox compatibility, as Firefox's MV3 implementation doesn't fully support service workers yet. This approach works in both Chrome and Firefox MV3.
 
 ### Permissions
 
