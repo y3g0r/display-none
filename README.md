@@ -46,7 +46,7 @@ For permanent installation in Firefox, you need to:
 2. Sign the extension through [Mozilla's Add-on Developer Hub](https://addons.mozilla.org/developers/)
 3. Or use [web-ext sign](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/#web-ext-sign) command
 
-**Note**: The extension uses Manifest V2 for maximum compatibility across all browsers. It uses cross-browser compatible API calls that work with both Firefox and Chrome.
+**Note**: The extension uses Manifest V3, the latest standard for browser extensions. It uses cross-browser compatible API calls that work with both Firefox 109+ and Chrome 88+.
 
 ## Usage
 
@@ -102,8 +102,8 @@ On mobile devices:
 
 ```
 display-none/
-├── manifest.json       # Extension configuration (Manifest V2)
-├── background.js       # Background script for icon clicks
+├── manifest.json       # Extension configuration (Manifest V3)
+├── background.js       # Background service worker
 ├── content.js          # Main element hiding logic
 ├── styles.css          # FAB and UI styling
 ├── icon.svg            # Extension icon (template)
@@ -128,18 +128,21 @@ display-none/
 - ✅ Chrome 88+
 - ✅ Edge 88+
 - ✅ Brave (Chromium-based)
-- ✅ Firefox 57+ (fully compatible)
+- ✅ Firefox 109+ (Manifest V3 support)
 - ✅ Opera (Chromium-based)
 
-The extension uses Manifest V2 with a browser API polyfill to support both Chrome's `chrome.*` API and Firefox's `browser.*` API, ensuring seamless compatibility across all major browsers.
+The extension uses Manifest V3, the latest browser extension standard, with a browser API polyfill to support both Chrome's `chrome.*` API and Firefox's `browser.*` API, ensuring seamless compatibility across all major browsers.
 
-**Note**: Manifest V2 is used for maximum compatibility. While Chrome is phasing out MV2 in favor of MV3, the extension will continue to work until at least 2025, and can be easily upgraded to MV3 when Firefox support improves.
+**Note**: Manifest V3 is future-proof and supported by all modern browsers. Firefox 109+ is required for full MV3 service worker support.
 
 ### Permissions
 
 - `activeTab`: Required to interact with the current webpage
 - `storage`: Used to persist hiding rules across page loads and sessions
-- `<all_urls>`: Allows the extension to work on all websites
+
+### Host Permissions
+
+- `<all_urls>`: Allows the extension to inject content scripts on all websites
 
 ### Storage and Persistence
 
