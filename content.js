@@ -53,6 +53,7 @@ class ElementHider {
     this.hoverHandler = null;
     this.hoverOutHandler = null;
     this.hoveredElement = null;
+    this.hoveredElementOriginalOutline = ''; // Store original outline of currently hovered element
 
     // Load and apply persisted rules on initialization
     this.loadAndApplyRules();
@@ -194,8 +195,10 @@ class ElementHider {
     this.removeEventListeners();
     document.body.style.cursor = '';
     if (this.hoveredElement) {
-      this.hoveredElement.style.outline = '';
+      // Restore original outline when deactivating
+      this.hoveredElement.style.outline = this.hoveredElementOriginalOutline;
       this.hoveredElement = null;
+      this.hoveredElementOriginalOutline = '';
     }
   }
 
@@ -304,19 +307,24 @@ class ElementHider {
         return;
       }
 
+      // Restore previous hovered element's outline
       if (this.hoveredElement && this.hoveredElement !== target) {
-        this.hoveredElement.style.outline = '';
+        this.hoveredElement.style.outline = this.hoveredElementOriginalOutline;
       }
 
+      // Store original outline of new hovered element
       this.hoveredElement = target;
+      this.hoveredElementOriginalOutline = target.style.outline;
       target.style.outline = '2px solid #ff0000';
     };
 
     this.hoverOutHandler = (e) => {
       const target = e.target;
       if (target === this.hoveredElement) {
-        target.style.outline = '';
+        // Restore original outline
+        target.style.outline = this.hoveredElementOriginalOutline;
         this.hoveredElement = null;
+        this.hoveredElementOriginalOutline = '';
       }
     };
 
@@ -368,14 +376,16 @@ class ElementHider {
       return; // Already hidden
     }
 
+    // Restore original outline if this was the hovered element
+    if (this.hoveredElement === element) {
+      element.style.outline = this.hoveredElementOriginalOutline;
+      this.hoveredElement = null;
+      this.hoveredElementOriginalOutline = '';
+    }
+
     this.originalDisplayStyles.set(element, originalDisplay);
     element.style.display = 'none';
     this.hiddenElements.add(element);
-
-    // Remove hover outline if this was the hovered element
-    if (this.hoveredElement === element) {
-      this.hoveredElement = null;
-    }
 
     // Add to history (remove any redo history after current index)
     this.history = this.history.slice(0, this.historyIndex + 1);
@@ -402,7 +412,7 @@ class ElementHider {
     const historyItem = this.history[this.historyIndex];
 
     if (historyItem.action === 'hide') {
-      // Restore original display from history (not from map)
+      // Restore original display from history
       historyItem.element.style.display = historyItem.originalDisplay;
       this.hiddenElements.delete(historyItem.element);
       this.originalDisplayStyles.delete(historyItem.element);
